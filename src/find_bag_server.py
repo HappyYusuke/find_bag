@@ -28,7 +28,7 @@ class FindBag():
         rospy.loginfo("Ready to set /grasp_bag_server")
         # Subscriber
         rospy.Subscriber('/scan', LaserScan, self.laserCB)
-        rospy.Subscriber('/cmd_vel', Twist, self.cmdCB)
+        rospy.Subscriber('/cmd_vel', Twist, self.velCB)
         # Manipulation
         self.eef = rospy.Publisher('/servo/endeffector', Bool, queue_size=10)
         self.arm_pose = rospy.ServiceProxy('/servo/arm', StrTrg)
@@ -46,7 +46,7 @@ class FindBag():
     def laserCB(self, receive_msg):
         self.laser_list = list(receive_msg.ranges)
 
-    def cmdCB(self, receive_msg):
+    def velCB(self, receive_msg):
         self.rotate_value = receive_msg.angular.z
 
     def roundHalfUp(self, value):
